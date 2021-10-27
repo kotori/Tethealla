@@ -11,7 +11,7 @@ apt install default-libmysqlclient-dev cmake
 
 Download the repo:
 ```bash
-git clone https://gitlab.com/kotori83/tethealla.git psobb_server
+git clone https://github.com/kotori/Tethealla.git psobb_server
 ```
 
 Build the server binaries:
