@@ -983,6 +983,11 @@ void initialize_connection (BANANA* connect)
     }
   }
 
+  if ((connect->block) && (connect->block <= serverBlocks))
+  {
+	blocks[connect->block - 1]->count--;
+  }
+
   if (connect->plySockfd >= 0)
   {
     ch2 = 0;
