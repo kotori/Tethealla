@@ -110,6 +110,43 @@ rm -v *.pid
 ```
 
 
+## SystemD
+/etc/systemd/system/tethealla@.service
+```
+[Unit]
+Description=Tethealla PSOBB Server Controller - %i
+After=mariadb.service
+
+[Service]
+User=tethealla
+Group=tethealla
+WorkingDirectory=/opt/gameservers/tethealla_server
+ExecStart=/bin/sh -c 'exec /usr/bin/stdbuf -o0 /opt/gameservers/tethealla_server/%i'
+StandardOutput=append:/opt/gameservers/tethealla_server/%i.log
+StandardError=append:/opt/gameservers/tethealla_server/%i.log
+PrivateDevices=true
+PrivateTmp=yes
+ProtectControlGroups=true
+ProtectHostname=true
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectSystem=full
+RestrictSUIDSGID=true
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
+```
+
+
+Manage with:
+```
+systemctl start|stop|restart|status tethealla@login_server
+systemctl start|stop|restart|status tethealla@ship_server
+systemctl start|stop|restart|status tethealla@patch_server
+```
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
