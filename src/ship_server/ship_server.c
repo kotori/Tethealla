@@ -972,19 +972,15 @@ void initialize_connection (BANANA* connect)
   {
     removeClientFromLobby (connect);
 
-    //if ((connect->block) && (connect->block <= serverBlocks))
-    //  blocks[connect->block - 1]->count--;
+    if ((connect->block > 0) && (connect->block <= serverBlocks)) {
+      blocks[connect->block - 1]->count--;
+    }
 
     if (connect->gotchardata == 1)
     {
       connect->character.playTime += (unsigned) servertime - connect->connected;
       ShipSend04 (0x02, connect, logon);
     }
-  }
-
-  if ((connect->block) && (connect->block <= serverBlocks))
-  {
-	blocks[connect->block - 1]->count--;
   }
 
   if (connect->plySockfd >= 0)
@@ -5484,7 +5480,6 @@ void LogonProcessPacket (ORANGE* ship)
             }
             else
             {
-              blocks[client->block - 1]->count++;
               // Request E7 information from server...
               Send83(client); // Lobby data
               ShipSend04 (0x00, client, logon);
@@ -10164,7 +10159,14 @@ void Send62 (BANANA* client)
               }
               rare_rate = ExpandDropRate ( rare_lookup & 0xFF );
               rare_item = rare_lookup >> 8;
-              rare_roll = rand();
+              //rare_roll = rand();
+              for(int i = 0; i < 10; i++) {
+                rare_roll = rand();
+                if  ( ( ( rare_lookup & 0xFF ) != 0 ) && ( ( rare_roll < rare_rate ) || ( l->redbox ) ) ) {
+                  break;
+                }
+              }
+
               //debug ("rare_roll = %u", rare_roll );
               if  ( ( ( rare_lookup & 0xFF ) != 0 ) && ( ( rare_roll < rare_rate ) || ( l->redbox ) ) )
               {
@@ -16087,6 +16089,7 @@ int32_t main()
                 start_encryption (workConnect);
                 /* Doin' block process... */
                 workConnect->block = ch+1;
+                blocks[workConnect->block - 1]->count++;
               }
               else
                 initialize_connection ( workConnect );
