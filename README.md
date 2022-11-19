@@ -1,3 +1,4 @@
+
 # Tethealla
 
 Tethealla PSOBB server for linux.
@@ -53,7 +54,7 @@ The way the server components rely on one another, they should be started in the
 The binaries can be run from the deploy/bin directory (same directory as tethealla.ini) like so:
 ```bash
 <deploy_dir>$ screen -S patch_server
-<deploy_dir>$ ./bin/patch_server &
+<deploy_dir>$ ./patch_server &
 <deploy_dir>$ echo $! > patch.pid
 Ctrl+A D
 ```
@@ -62,7 +63,7 @@ After starting each service, you may want to create an account or two to start w
 The account_add script will assist you in doing so. If you are using MySQL mode a database
 table will be populated. If you are using DAT mode your accounts.dat file will be created/updated.
 ```bash
-./bin/account_add
+./account_add
 ```
 
 Here are some example startup scripts, I have systemd ones coming soon.
@@ -83,15 +84,15 @@ cd ${TETH_DIR};
 
 # The sleeps in between services simply gives things time to start.
 #1.) Patch Server
-./bin/patch_server &
+./patch_server &
 echo $! > patch.pid
 sleep 5
 #2.) Login Server
-./bin/login_server &
+./login_server &
 echo $! > login.pid
 sleep 5
 #3.) Ship Server
-./bin/ship_server &
+./ship_server &
 echo $! > ship.pid
 ```
 
